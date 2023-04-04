@@ -2,8 +2,6 @@
 
 A flexible, extensible search across your whole Backstage ecosystem.
 
-Development is ongoing. You can follow the progress and contribute at the Backstage [Search Project Board](https://github.com/backstage/backstage/projects/6) or reach out to us in the [`#search` Discord channel](https://discord.com/channels/687207715902193673/770283289327566848).
-
 ## Getting started
 
 Run `yarn dev` in the root directory, and then navigate to [/search](http://localhost:3000/search) to check out the plugin.
@@ -27,3 +25,7 @@ Don't forget, a lot of functionality is available in web libraries and backend p
 - `@backstage/plugin-search-backend-node`, which is responsible for the search
   index management
 - `@backstage/plugin-search-backend`, which is responsible for query processing
+
+## Support
+
+Reach out to us in the [`#search` Discord channel](https://discord.com/channels/687207715902193673/770283289327566848).
