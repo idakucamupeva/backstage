@@ -15,6 +15,8 @@
  */
 
 import { Knex } from 'knex';
+import uniq from 'lodash/uniq';
+import { DbFinalEntitiesRow, DbRefreshStateRow } from '../../tables';
 
 /**
  * Finds and deletes all orphaned entities, i.e. entities that do not have any
@@ -30,18 +32,63 @@ export async function deleteOrphanedEntities(options: {
 
   // Limit iterations for sanity
   for (let i = 0; i < 100; ++i) {
-    const count = await tx
-      .delete()
-      .from('refresh_state')
-      .whereNotIn('entity_ref', keep =>
-        keep.distinct('target_entity_ref').from('refresh_state_references'),
+    const candidates = await tx
+      .with('orphans', orphans =>
+        orphans
+          .from<DbRefreshStateRow>('refresh_state')
+          .select('entity_id', 'entity_ref')
+          .whereNotIn('entity_ref', keep =>
+            keep.distinct('target_entity_ref').from('refresh_state_references'),
+          ),
+      )
+      .select({
+        entityId: 'orphans.entity_id',
+        relationTargetId: 'refresh_state.entity_id',
+      })
+      .from('orphans')
+      .leftOuterJoin(
+        'refresh_state_references',
+        'refresh_state_references.source_entity_ref',
+        'orphans.entity_ref',
+      )
+      .leftOuterJoin(
+        'refresh_state',
+        'refresh_state.entity_ref',
+        'refresh_state_references.target_entity_ref',
       );
 
-    if (!(count > 0)) {
+    if (!candidates.length) {
       break;
     }
 
-    total += count;
+    const orphanIds: string[] = uniq(candidates.map(r => r.entityId));
+    const orphanRelationIds: string[] = uniq(
+      candidates.map(r => r.relationTargetId).filter(Boolean),
+    );
+
+    total += orphanIds.length;
+
+    // Delete the orphans themselves
+    await tx
+      .table<DbRefreshStateRow>('refresh_state')
+      .delete()
+      .whereIn('entity_id', orphanIds);
+
+    // Mark all of things that the orphans had relations to for processing and
+    // stitching
+    await tx
+      .table<DbFinalEntitiesRow>('final_entities')
+      .update({
+        hash: 'orphan-parent-deleted',
+      })
+      .whereIn('entity_id', orphanRelationIds);
+    await tx
+      .table<DbRefreshStateRow>('refresh_state')
+      .update({
+        result_hash: 'orphan-parent-deleted',
+        next_update_at: tx.fn.now(),
+      })
+      .whereIn('entity_id', orphanRelationIds);
   }
 
   return total;

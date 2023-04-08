@@ -23,6 +23,7 @@ import {
 } from '@backstage/plugin-catalog-node';
 import { DbRelationsRow } from './tables';
 import { RefreshKeyData } from '../processing/types';
+import { deleteOrphanedEntities } from './operations/util/deleteOrphanedEntities';
 
 /**
  * An abstraction for transactions of the underlying database technology.
@@ -151,6 +152,8 @@ export interface ProcessingDatabase {
     txOpaque: Transaction,
     options: ListParentsOptions,
   ): Promise<ListParentsResult>;
+
+  deleteOrphanedEntities(txOpaque: Transaction): Promise<void>;
 }
 
 /**
