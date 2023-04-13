@@ -1,5 +1,38 @@
 # @backstage/plugin-catalog-backend
 
+## 1.9.0
+
+### Minor Changes
+
+- 92a4590fc3a: Add monorepo support to CodeOwnersProccesor.
+
+### Patch Changes
+
+- 62a725e3a94: Use the `LocationSpec` type from the `catalog-common` package in place of the deprecated `LocationSpec` from the `catalog-node` package.
+- be5aca50114: Updates and moves OpenAPI spec to `src/schema/openapi.yaml` and uses `ApiRouter` type from `@backstage/backend-openapi-utils` to handle automatic types from the OpenAPI spec file.
+- c9a0fdcd2c8: Fix deprecated types.
+- 899ebfd8e02: Add full text search support to the `by-query` endpoint.
+- 1e4f5e91b8e: Bump `zod` and `zod-to-json-schema` dependencies.
+- c4b846359c0: Allow replacement of the BuiltinKindsEntityProcessor which enables customization of schema validation and connections emitted.
+- c36b89f2af3: Fixed bug in the `DefaultCatalogProcessingEngine` where entities that contained multiple different types of relations for the same source entity would not properly trigger stitching for that source entity.
+- 01ae205352e: Collator factories instantiated in new backend system modules and now marked as deprecated. Will be continued to be exported publicly until the new backend system is fully rolled out.
+- Updated dependencies
+  - @backstage/plugin-scaffolder-common@1.2.7
+  - @backstage/backend-common@0.18.4
+  - @backstage/catalog-client@1.4.1
+  - @backstage/plugin-permission-node@0.7.7
+  - @backstage/plugin-permission-common@0.7.5
+  - @backstage/catalog-model@1.3.0
+  - @backstage/plugin-search-backend-module-catalog@0.1.0
+  - @backstage/integration@1.4.4
+  - @backstage/backend-plugin-api@0.5.1
+  - @backstage/config@1.0.7
+  - @backstage/errors@1.1.5
+  - @backstage/types@1.0.2
+  - @backstage/plugin-catalog-common@1.0.13
+  - @backstage/plugin-catalog-node@1.3.5
+  - @backstage/plugin-search-common@1.2.3
+
 ## 1.9.0-next.3
 
 ### Minor Changes

@@ -1,5 +1,50 @@
 # @backstage/plugin-scaffolder-backend
 
+## 1.13.0
+
+### Minor Changes
+
+- 30ffdae70f9: Added `fetch:plain:file` action to fetch a single file, this action is also added to the list of built-in actions.
+- 65e989f4018: Added the possibility to authorize parameters and steps of a template
+
+  The scaffolder plugin is now integrated with the permission framework.
+  It is possible to toggle parameters or actions within templates by marking each section with specific `tags`, inside a `backstage:permissions` property under each parameter or action. Each parameter or action can then be permissioned by using a conditional decision containing the `scaffolderTemplateRules.hasTag` rule.
+
+- d7c8c222e25: Allow for a commit message to differ from the PR title when publishing a GitHub pull request.
+- 95ea9f69b6f: Provide some more default filters out of the box and refactoring how the filters are applied to the `SecureTemplater`.
+
+  - `parseEntityRef` will take an string entity triplet and return a parsed object.
+  - `pick` will allow you to reference a specific property in the piped object.
+
+  So you can now combine things like this: `${{ parameters.entity | parseEntityRef | pick('name') }}` to get the name of a specific entity, or `${{ parameters.repoUrl | parseRepoUrl | pick('owner') }}` to get the owner of a repo.
+
+### Patch Changes
+
+- e23abb37ec1: Rename output parameter `mergeRequestURL` of `publish:gitlab:merge-request` action to `mergeRequestUrl`.
+- e27ddc36dad: Added a possibility to cancel the running task (executing of a scaffolder template)
+- a7eb36c6e38: Improve type-check for scaffolder output parameters
+- c9a0fdcd2c8: Fix deprecated types.
+- 1e4f5e91b8e: Bump `zod` and `zod-to-json-schema` dependencies.
+- f37a95adcd8: Stripped entity types and namespace before passing to GitHub API
+- Updated dependencies
+  - @backstage/plugin-catalog-backend@1.9.0
+  - @backstage/plugin-scaffolder-common@1.2.7
+  - @backstage/plugin-scaffolder-node@0.1.2
+  - @backstage/backend-common@0.18.4
+  - @backstage/catalog-client@1.4.1
+  - @backstage/plugin-permission-node@0.7.7
+  - @backstage/plugin-permission-common@0.7.5
+  - @backstage/backend-tasks@0.5.1
+  - @backstage/catalog-model@1.3.0
+  - @backstage/integration@1.4.4
+  - @backstage/backend-plugin-api@0.5.1
+  - @backstage/config@1.0.7
+  - @backstage/errors@1.1.5
+  - @backstage/types@1.0.2
+  - @backstage/plugin-auth-node@0.2.13
+  - @backstage/plugin-catalog-common@1.0.13
+  - @backstage/plugin-catalog-node@1.3.5
+
 ## 1.13.0-next.3
 
 ### Minor Changes

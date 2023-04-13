@@ -1,5 +1,16 @@
 # @backstage/core-plugin-api
 
+## 1.5.1
+
+### Patch Changes
+
+- 2898b6c8d52: Minor type tweaks for TypeScript 5.0
+- e0c6e8b9c3c: Update peer dependencies
+- Updated dependencies
+  - @backstage/version-bridge@1.0.4
+  - @backstage/config@1.0.7
+  - @backstage/types@1.0.2
+
 ## 1.5.1-next.1
 
 ### Patch Changes
